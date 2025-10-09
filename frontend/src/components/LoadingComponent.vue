@@ -18,9 +18,12 @@ import {onMounted, ref} from "vue"
 // Подключаем "результирующие" компоненты
 import MainView from "./MainView.vue"
 import UnathorizedView from "./UnathorizedView.vue"
+import {useUserStore} from "@/stores/user.js";
 
 const loading = ref(false)
 const status = ref("idle") // idle | success | error
+const user_data_url = "http://localhost:8080/api/v1/user_info/"
+
 
 onMounted(() => {
   sendRequest()
@@ -33,13 +36,29 @@ async function sendRequest() {
 
   try {
     // Пример запроса (можно заменить на axios.post/get)
-    const res = await fetch("https://jsonplaceholder.typicode.com/posts/1")
+    const res = await fetch(user_data_url)
 
     if (res.ok) {
+      const store = useUserStore();
+      const data = await res.json();
+      store.userId = data.user_id;
+      store.username = data.username;
+      store.fullname = data.fullname;
+      store.registrationDate = data.registration_date;
+      store.language = data.language;
+      store.isPremium = data.is_premium;
+      store.balance = data.balance;
+      store.toncoinCourseLessonsCompleted = data.toncoin_course_lessons_completed;
+      store.nftSellCourseLessonsCompleted = data.nft_sell_course_lessons_completed;
+      store.p2pCourseLessonsCompleted = data.p2p_course_lessons_completed;
+      store.scamCourseLessonsCompleted = data.scam_course_lessons_completed;
+
       status.value = "success"
     } else {
       status.value = "error"
     }
+
+
   } catch (e) {
     status.value = "error"
   } finally {
