@@ -12,6 +12,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@telegram-apps/sdk": "^3.11.8",
+    "pinia": "^3.0.3",
     "vue": "^3.5.22"
   },
   "devDependencies": {

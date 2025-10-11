@@ -1,5 +1,5 @@
 <template>
-  <div class="flex items-center justify-center min-h-screen">
+  <div>
     <!-- Если идет загрузка -->
     <div v-if="loading" class="loader"></div>
 
@@ -29,14 +29,22 @@ onMounted(() => {
   sendRequest()
 })
 
+function retrieveLaunchParams() {
+
+  // Тестовые данные
+  return "user=%7B%22id%22%3A7197434175%2C%22photo_url%22%3A%22https%3A%2F%2Fencrypted-tbn0.gstatic.com%2Fimages%3Fq%3Dtbn%3AANd9GcS3dlJN6Pct9s9xNTqNTvyNBK8IB50YypyDLw%26s%22%7D&hash="
+}
+
 
 async function sendRequest() {
   loading.value = true
   status.value = "idle"
 
   try {
-    // Пример запроса (можно заменить на axios.post/get)
-    const res = await fetch(user_data_url)
+    const res = await fetch(user_data_url, {
+      method: "POST",
+      body: JSON.stringify({initData: retrieveLaunchParams()})
+    })
 
     if (res.ok) {
       const store = useUserStore();
@@ -52,6 +60,7 @@ async function sendRequest() {
       store.nftSellCourseLessonsCompleted = data.nft_sell_course_lessons_completed;
       store.p2pCourseLessonsCompleted = data.p2p_course_lessons_completed;
       store.scamCourseLessonsCompleted = data.scam_course_lessons_completed;
+      store.photoUrl = data.avatar;
 
       status.value = "success"
     } else {
@@ -61,6 +70,7 @@ async function sendRequest() {
 
   } catch (e) {
     status.value = "error"
+    console.log(e);
   } finally {
     loading.value = false
   }
@@ -68,6 +78,7 @@ async function sendRequest() {
 </script>
 
 <style scoped>
+
 /* Простая крутилка */
 .loader {
   border: 8px solid #e5e7eb; /* серый */

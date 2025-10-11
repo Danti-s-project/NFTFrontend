@@ -22,7 +22,7 @@
   align-items: center;
   height: 100%;
   width: 100%;
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(64, 64, 64);
   padding: 10px;
   border-radius: 20px;
 }

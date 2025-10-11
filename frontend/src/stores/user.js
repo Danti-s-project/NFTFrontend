@@ -12,6 +12,7 @@ export const useUserStore = defineStore('user', {
         nftSellCourseLessonsCompleted: 0,
         p2pCourseLessonsCompleted: 0,
         scamCourseLessonsCompleted: 0,
-        toncoinCourseLessonsCompleted: 0
+        toncoinCourseLessonsCompleted: 0,
+        photoUrl: null
     })
 })
